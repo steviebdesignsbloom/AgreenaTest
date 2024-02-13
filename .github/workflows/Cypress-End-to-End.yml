@@ -34,5 +34,5 @@ jobs:
     - name: Wait for React App to Start
       run: npx wait-on http://localhost:3000
 
-    - name: Run Cypress Tests
-      run: npm run cypress:run
+    - name: Cypress run
+      uses: cypress-io/github-action@v5
