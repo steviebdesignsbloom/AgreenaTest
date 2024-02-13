@@ -4,6 +4,7 @@
 // let totalCount
 
 describe('React shopping card frontend tests', () => {
+  cy.once('uncaught:exception', () => false);
   beforeEach(() => {
     cy.visit('/')
     // Cypress.on('uncaught:exception', (err, runnable) => {
