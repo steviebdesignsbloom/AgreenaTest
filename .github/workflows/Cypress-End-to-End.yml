@@ -1,0 +1,46 @@
+name: Test React and Cypress
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      cypress:
+        image: cypress/included:latest
+        ports:
+          - 3000:3000
+          - 3001:3001
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 14
+
+    - name: Install Dependencies
+      run: |
+        npm install
+        npm install cypress
+
+    - name: Build and Start React App
+      run: npm start &
+
+    - name: Wait for React App to Start
+      run: npx wait-on http://localhost:3000
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v5
+
+    - name: Generate list using Markdown
+      run: |
+        echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+        echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
+        echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
+        echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
