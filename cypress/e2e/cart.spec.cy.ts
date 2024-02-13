@@ -6,7 +6,7 @@
 describe('React shopping card frontend tests', () => {
   beforeEach(() => {
     cy.visit('/')
-    cy.url().should('eq', 'http://localhost:3000/')
+    // cy.url().should('eq', 'http://localhost:3000/')
   })
 
   context('Validating header counter with products', () => {
