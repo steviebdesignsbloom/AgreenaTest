@@ -8,6 +8,7 @@ export default defineConfig({
     },
     baseUrl: "http://localhost:3000/",
     viewportWidth: 1800,
+    projectId: "7fqkp7",
     viewportHeight: 2500
   },
   env: {
