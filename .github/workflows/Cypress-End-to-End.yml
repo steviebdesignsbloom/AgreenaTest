@@ -29,6 +29,21 @@ jobs:
         npm install cypress
 
     - name: Build and Start React App
+      run: npm start &
+
+    - name: Wait for React App to Start
+      run: npx wait-on http://localhost:3000
+
+    strategy:
+      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
+      matrix:
+        containers: [1, 2] # Uses 2 parallel instances
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v6
         with:
           # Starts web server for E2E tests - replace with your own server invocation
           # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
@@ -43,7 +58,9 @@ jobs:
           # in GitHub repo → Settings → Secrets → Actions
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    - name: Generate list using Markdown
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Generate list using Markdown
       run: |
         echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
