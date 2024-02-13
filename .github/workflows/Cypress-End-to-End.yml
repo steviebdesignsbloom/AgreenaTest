@@ -1,22 +1,38 @@
-name: GoCompare Registration Number Search
-on: [push]
+name: Test React and Cypress
+
+on: [push, pull_request]
+
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      cypress:
+        image: cypress/included:latest
+        ports:
+          - 3000:3000
+          - 3001:3001
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with: 
-          node-version: '20.x'
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 14
 
-      - name: Install NPM dependencies
-      - run: npm install
-      - run: npm start
-      - run: npm test
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
+    - name: Install Dependencies
+      run: |
+        npm install
+        npm install cypress
+
+    - name: Build and Start React App
+      run: npm start &
+
+    - name: Wait for React App to Start
+      run: npx wait-on http://localhost:3000
+
+    - name: Run Cypress Tests
+      run: npm run cypress:run
