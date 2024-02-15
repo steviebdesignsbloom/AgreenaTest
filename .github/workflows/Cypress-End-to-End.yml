@@ -21,7 +21,6 @@ jobs:
     - name: Set up Node.js
       run: |
         using: 'node20'
-        main: 'main.js'
 
     - name: Install Dependencies
       run: |
